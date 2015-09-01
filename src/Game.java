@@ -1,5 +1,4 @@
 import javax.swing.JOptionPane;
-
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -13,20 +12,22 @@ import javafx.scene.text.Text;
 public class Game {
     public static final String TITLE = "Mad Max: Conquer Fury Road";
     public static final int LANE_SHIFT_DISTANCE = 300;
-    private static final double GROWTH_RATE = 1.1;
-    private static final int CAR_SPEED = 300;
+
+    
+    private Group root;
 
     private ImageView myBackground;
     private ImageView myBackground1;
     
     private Car myCar;
+    private int CAR_SPEED = 300;
 
     private Rectangle myEnemy;
     
-    private Text myScore;
-    private int currentScore;
-
+    private Text myScoreText;
+    private Text myCarHealthText;
     
+    private int currentScore;
 
     private Scene myScene;
     
@@ -36,21 +37,17 @@ public class Game {
     
     public Scene init (int width, int height) {
         // Create a scene graph to organize the scene
-        Group root = new Group();
+        root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
         
         // Make some shapes and set their properties
         
-        
+        myCar = new Car(400, 700);
         
         Image road = new Image(getClass().getClassLoader().getResourceAsStream("road.gif"));
         myBackground = new ImageView(road);
         myBackground1 = new ImageView(road);
-
-        // x and y represent the top left corner, so center it
-        myCar.carGraphic.setX(400);
-        myCar.carGraphic.setY(700);
         
         myBackground.setX(0);
         myBackground.setY(0);
@@ -59,10 +56,15 @@ public class Game {
         myBackground1.setY(-900);
         
         this.currentScore = 0;
-        myScore = new Text("Score: " + currentScore);
-        myScore.setX(700);
-        myScore.setY(100);
-
+        myScoreText = new Text("Score: " + currentScore);
+        myScoreText.setX(700);
+        myScoreText.setY(100);
+        
+        myCarHealthText = new Text("Health: " + myCar.getHealth());
+        myCarHealthText.setX(700);
+        myCarHealthText.setY(125);
+        
+        
         myEnemy = new Rectangle(100, 100, 100, 100);
         myEnemy.setFill(Color.RED);
 //        myBottomBlock = new Rectangle(width / 2 - 25, height / 2 + 50, 50, 50);
@@ -73,7 +75,8 @@ public class Game {
         root.getChildren().add(myBackground1);
         root.getChildren().add(myCar.carGraphic);
         root.getChildren().add(myEnemy);
-        root.getChildren().add(myScore);
+        root.getChildren().add(myScoreText);
+        root.getChildren().add(myCarHealthText);
 
 //        root.getChildren().add(myTopBlock);
 //        root.getChildren().add(myBottomBlock);
@@ -87,7 +90,13 @@ public class Game {
     	if(myCar.getHealth() <= 0){
     		// end game
     		////JOptionPane.showMessageDialog("You lose!");
-    		
+    	}
+    	
+    	for(int i = 0; i < root.getChildren().size(); i++){
+    		// Checks if given node is an enemy
+//    		if(root.getChildren().get(i).getClass() != ){
+//    			
+//    		}
     	}
     	
     	if(myBackground.getY() >= 900){
@@ -157,7 +166,7 @@ public class Game {
     
     private void updateScore(int points){
     	currentScore += points;
-    	myScore.setText("Score: " + currentScore);
+    	myScoreText.setText("Score: " + currentScore);
     }
 
 }

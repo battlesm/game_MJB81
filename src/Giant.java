@@ -3,22 +3,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Giant extends Enemy{
-	private double Health;
-	private double Attack;
-	public Rectangle giantGif;
-	
 	public Giant(int x, int y){
-		Health = Math.random() * 100;
-		Attack = Math.random() * 50;
-		giantGif = new Rectangle(x, y, 100, 100);
-		giantGif.setFill(Color.RED);
+		avatar = new Rectangle(x, y, 100, 100);
+		avatar.setFill(Color.RED);
+		lrAttack = new Rectangle(20, 20);
+		lrAttack.setFill(Color.GRAY);
+		
+		health = Math.random() * 100;
+		lrAttackStrength = Math.random() * 50;
+		srAttackStrength = 50;
 	}
-	
-	@Override
-	public Rectangle Attack(){
-		Rectangle attack = new Rectangle(20, 20);
-		attack.setFill(Color.GRAY);
-		return attack;
-	}
-
 }
