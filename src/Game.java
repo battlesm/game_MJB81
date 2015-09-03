@@ -3,14 +3,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
 public class Game {
@@ -68,10 +65,7 @@ public class Game {
         myBackground1.setY(-900);
         
         this.initializeHeaders();
-        
-        Giant poop = new Giant(400, 300);
-        enemies.add(poop);
-        
+
         // order added to the group is the order in which they are drawn
         
         root.getChildren().add(myBackground);
@@ -79,7 +73,7 @@ public class Game {
         root.getChildren().add(myCar.carGraphic);
         root.getChildren().add(myScoreText);
         root.getChildren().add(myCarHealthText);
-        root.getChildren().add(poop.avatar);
+        
         // Respond to input
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         myScene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
@@ -105,10 +99,10 @@ public class Game {
     		double lane = Math.random();
     		double position = 100 + Math.random() * 400;
     		
-    		if(lane < .25){
+    		if(lane < .3){
     			lane = LEFT_LANE_X;
     		}
-    		else if(lane < .5){
+    		else if(lane < .6){
     			lane = RIGHT_LANE_X;
     		}
     		else{
@@ -162,6 +156,9 @@ public class Game {
     	            changeHealth(-e.shortRangeAttackStrength);
     	            killEnemy(e);
     	        }
+    	        if(e.avatar.getY() >= 800){
+    	        	removeEnemy(e);
+    	        }
     		}
     	}
     	
@@ -182,12 +179,17 @@ public class Game {
 	}
 
 	private void killEnemy(Enemy e) {
+		removeEnemy(e);
+		changeScore(e.getKillScore());
+	}
+
+	private void removeEnemy(Enemy e) {
 		root.getChildren().remove(e.avatar);
 		enemies.remove(e);
 	}
 	
 	private void fireEnemyWeapon(Enemy e){
-		Projectile p = new Projectile(myCar, Main.Side.Bad, e.avatar.getX() + 50, e.avatar.getY() + 100, .1, e.getLongRangeAttackStrength(  ));
+		Projectile p = new Projectile(myCar, Main.Side.Bad, e.avatar.getX() + 50, e.avatar.getY() + 130, .01, e.getLongRangeAttackStrength());
 		projectiles.add(p);
 		root.getChildren().add(p.proj);
 	}
@@ -215,6 +217,16 @@ public class Game {
             	Projectile shot = new Projectile(myCar, Main.Side.Good, myCar.carGraphic.getX() + 50, myCar.carGraphic.getY() - 50, 10, myCar.getShotImpact());
             	root.getChildren().add(shot.proj);
             	projectiles.add(shot);
+            	break;
+            case UP:
+            	if(CAR_SPEED < 600){
+            		CAR_SPEED += 10;
+            	}
+            	break;
+            case DOWN:
+            	if(CAR_SPEED > 50){
+            		CAR_SPEED -= 10;
+            	}
             	break;
             default:
                 // do nothing

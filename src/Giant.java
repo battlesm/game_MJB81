@@ -1,7 +1,5 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class Giant extends Enemy{
 	public Giant(double x, double y){
@@ -15,5 +13,6 @@ public class Giant extends Enemy{
 		health = Math.random() * 100;
 		longRangeAttackStrength = Math.random() * 5;
 		shortRangeAttackStrength = 50;
+		killScore = 20;
 	}
 }

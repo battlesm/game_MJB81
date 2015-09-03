@@ -1,12 +1,13 @@
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
 
 public abstract class Enemy {
 	protected ImageView avatar;
 	
 	protected double health;
+	protected int killScore;
 	protected double shortRangeAttackStrength;
 	protected double longRangeAttackStrength;
+	
 	protected double velocity;
 	
 	public ImageView getAvatar(){
@@ -15,6 +16,10 @@ public abstract class Enemy {
 	
 	public double getHealth(){
 		return health;
+	}
+	
+	public int getKillScore(){
+		return killScore;
 	}
 	
 	public double getLongRangeAttackStrength(){

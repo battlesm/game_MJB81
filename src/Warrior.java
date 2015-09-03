@@ -13,6 +13,7 @@ public class Warrior extends Enemy {
 		health = Math.random() * 50;
 		longRangeAttackStrength = 5 + Math.random() * 5;
 		shortRangeAttackStrength = 10;
+		killScore = 10;
 	}
 
 }

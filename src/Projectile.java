@@ -14,14 +14,15 @@ public class Projectile {
 		
 		
 		Image bullet = new Image(getClass().getClassLoader().getResourceAsStream("bullet.jpg"));
-        proj = new ImageView(bullet);
+        
         
         if(s.equals(Main.Side.Bad)){
-        	proj.setRotate(180);
-			direction[0] = car.carGraphic.getX() - initialX;
+        	bullet = new Image(getClass().getClassLoader().getResourceAsStream("enemyProjectile.bmp"));
+			direction[0] = car.carGraphic.getX() + 50 - initialX;
 			direction[1] = car.carGraphic.getY() - initialY;
 		}
         
+        proj = new ImageView(bullet);
         proj.setX(initialX);
         proj.setY(initialY);
 	}
