@@ -22,7 +22,7 @@ public class Car {
 		return health;
 	}
 	
-	public int getShot(){
+	public int getShotImpact(){
 		return shotImpact;
 	}
 	
@@ -38,9 +38,7 @@ public class Car {
 		hitImpact += deltaImpact;
 	}
 	
-	public void changeHealth(int deltaHealth){
+	public void changeHealth(double deltaHealth){
 		health += deltaHealth;
 	}
-	
-
 }

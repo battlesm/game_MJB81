@@ -1,16 +1,19 @@
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Giant extends Enemy{
-	public Giant(int x, int y){
-		avatar = new Rectangle(x, y, 100, 100);
-		avatar.setFill(Color.RED);
-		lrAttack = new Rectangle(20, 20);
-		lrAttack.setFill(Color.GRAY);
+	public Giant(double x, double y){
+		Image giant = new Image(getClass().getClassLoader().getResourceAsStream("DC_-_Fighter_Sprite.gif"));
+        avatar = new ImageView(giant);
+        avatar.setX(x);
+        avatar.setY(y);
+
+		velocity = 1;
 		
 		health = Math.random() * 100;
-		lrAttackStrength = Math.random() * 50;
-		srAttackStrength = 50;
+		longRangeAttackStrength = Math.random() * 5;
+		shortRangeAttackStrength = 50;
 	}
 }

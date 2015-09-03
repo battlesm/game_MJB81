@@ -1,6 +1,4 @@
 
 public abstract class PowerUp {
-	public void getEffect(Car car){
-		car.changeHealth(10);
-	}
+	public abstract void getEffect(Car car);
 }

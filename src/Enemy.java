@@ -2,35 +2,34 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
 public abstract class Enemy {
-	protected Rectangle avatar;
-	protected Rectangle lrAttack;
+	protected ImageView avatar;
 	
 	protected double health;
-	protected double srAttackStrength;
-	protected double lrAttackStrength;
+	protected double shortRangeAttackStrength;
+	protected double longRangeAttackStrength;
+	protected double velocity;
 	
-	public Rectangle getLRAttack(){
-		return lrAttack;
-	}
-	
-	public Rectangle getAvatar(){
+	public ImageView getAvatar(){
 		return avatar;
 	}
 	
-	public double getLRAttackStrength(){
-		return lrAttackStrength;
+	public double getHealth(){
+		return health;
 	}
 	
-	public double getSRAttackStrength(){
-		return srAttackStrength;
+	public double getLongRangeAttackStrength(){
+		return longRangeAttackStrength;
 	}
 	
-	public void wasShot(double shotStrength){
-		health -= shotStrength;
+	public double getShortRangeAttackStrength(){
+		return shortRangeAttackStrength;
 	}
 	
-	public void wasHit(double hitImpact){
-		health -= hitImpact;
+	public void move(){
+		avatar.setY(avatar.getY() + velocity);
 	}
-
+	
+	public void wasShot(double d){
+		health -= d;
+	}
 }

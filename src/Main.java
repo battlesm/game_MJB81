@@ -14,7 +14,6 @@ public class Main extends Application {
 
 	    private Game myGame;
 
-
 	    /**
 	     * Set things up at the beginning.
 	     */
@@ -30,7 +29,6 @@ public class Main extends Application {
 	        
 	        s.show();
 	        
-
 	        // sets the game's loop
 	        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 	                                      e -> myGame.step(SECOND_DELAY));
@@ -41,11 +39,13 @@ public class Main extends Application {
 	        
 	        s.setResizable(false);
 	    }
-
-	    /**
-	     * Start the program.
-	     */
+	    
+	    // Start the program.
 	    public static void main (String[] args) {
 	        launch(args);
+	    }
+	    
+	    public enum Side {
+	    	Good, Bad;
 	    }
 	}
