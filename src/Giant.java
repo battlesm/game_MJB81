@@ -8,7 +8,7 @@ public class Giant extends Enemy{
         avatar.setX(x);
         avatar.setY(y);
 
-		velocity = 1;
+		velocity = .6;
 		
 		health = Math.random() * 100;
 		longRangeAttackStrength = Math.random() * 5;

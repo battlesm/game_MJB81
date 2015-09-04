@@ -30,7 +30,7 @@ public abstract class Enemy {
 		return shortRangeAttackStrength;
 	}
 	
-	public void move(){
+	public void move(Car car){
 		avatar.setY(avatar.getY() + velocity);
 	}
 	

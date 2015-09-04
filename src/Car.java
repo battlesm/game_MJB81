@@ -2,9 +2,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Car {
-	private int health;
-	private int hitImpact;
-	private int shotImpact;
+	protected int health;
+	protected int hitImpact;
+	protected int shotImpact;
 	public ImageView carGraphic;
 	
 	public Car(int x, int y){
