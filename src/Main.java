@@ -14,22 +14,16 @@ public class Main extends Application {
 
 	    private Game myGame;
 
-	    /**
-	     * Set things up at the beginning.
-	     */
 	    @Override
 	    public void start (Stage s) {
-	        // create your own game here
 	        myGame = new Game();
 	        s.setTitle(myGame.getTitle());
 
-	        // attach game to the stage and display it
 	        Scene scene = myGame.init(WIDTH, HEIGHT);
 	        s.setScene(scene);
 	        
 	        s.show();
 	        
-	        // sets the game's loop
 	        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 	                                      e -> myGame.step(SECOND_DELAY));
 	        Timeline animation = new Timeline();
@@ -40,7 +34,6 @@ public class Main extends Application {
 	        s.setResizable(false);
 	    }
 	    
-	    // Start the program.
 	    public static void main (String[] args) {
 	        launch(args);
 	    }
