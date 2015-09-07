@@ -15,5 +15,4 @@ public class Warrior extends Enemy {
 		shortRangeAttackStrength = 10;
 		killScore = 10;
 	}
-
 }

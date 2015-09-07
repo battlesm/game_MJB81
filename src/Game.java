@@ -18,7 +18,6 @@ public class Game {
     private static final String HEALTH_HEADER = "Health: ";
 	
     private static final double GIANT_PROBABILITY = .25;
-	private static final int ENEMY_EDGE = 800;
 	private static final double ENEMY_PROBABILITY = .01;
 	private static final int CAR_Y = 700;
 	private static final int MAX_ENEMIES = 10;
@@ -33,6 +32,8 @@ public class Game {
 	private Car myCar;
 	
 	private Screen currentScreen;
+	
+	private InteractionHandler myInteractions;
 	
 	private List<Enemy> activeEnemies;
 	private List<Projectile> activeProjectiles;
@@ -60,6 +61,8 @@ public class Game {
         activeEnemies = new ArrayList<Enemy>();
         activeProjectiles = new ArrayList<Projectile>();
         
+        myInteractions = new InteractionHandler();
+        
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
         
@@ -71,7 +74,7 @@ public class Game {
         return myScene;
     }
 
-	private void initializeMainScreen() {
+	public void initializeMainScreen() {
 		currentScreen = Screen.MAIN_SCREEN;
 		enemiesFrozen = false;
         invincible = false;
@@ -93,7 +96,7 @@ public class Game {
         root.getChildren().add(myCarHealthText);
 	}
 	
-	private void initializeLevel1() {
+	public void initializeLevel1() {
 		clearScreen();
         
         Image road = new Image(getClass().getClassLoader().getResourceAsStream("road.gif"));
@@ -150,8 +153,8 @@ public class Game {
     		createEnemyLevel2();
     	}
     	
-        handleShot();
-        handleCollision();
+        myInteractions.handleShot(activeProjectiles, activeEnemies, myCar, this, myCarHealthText, invincible);
+        myInteractions.handleCollision(activeEnemies, myCar, this, myCarHealthText, enemiesFrozen, invincible);
         	
         this.updatePosition(elapsedTime);
     }
@@ -166,71 +169,7 @@ public class Game {
     	}
 	}
 	
-	private void handleCollision() {
-		if(!activeEnemies.isEmpty()){
-    		for(int k = activeEnemies.size() - 1; k > -1; k--){
-    			Enemy e = activeEnemies.get(k);
-    			double doesFireWeapon = Math.random();
-    			if(!enemiesFrozen){
-    				e.move(myCar);
-    			}
-    			
-    			if(doesFireWeapon > .99 && !enemiesFrozen){
-    				fireEnemyWeapon(e);
-    			}
-    	        if (e.avatar.getBoundsInParent().intersects(myCar.carGraphic.getBoundsInParent())) {
-    	        	if(!invincible){
-    	        		changeHealth(-e.shortRangeAttackStrength);
-    	        	}
-    	        	
-    	            killEnemy(e);
-    	            break;
-    	        }
-    	        if(e.avatar.getY() >= ENEMY_EDGE){
-    	        	removeEnemy(e);
-    	        }
-    		}
-    	}
-	}
 	
-
-	private void handleShot() {
-		if(!activeProjectiles.isEmpty()){
-			project:
-    		for(int i = activeProjectiles.size() - 1; i > -1; i--){
-    			Projectile p = activeProjectiles.get(i);
-        		p.move();
-        		
-        		if(p.proj.getY() <= 0 || p.proj.getY() > 900){
-        			removeProjectile(p);
-        			break;
-        		}
-        		if(!activeEnemies.isEmpty()){
-        			for(int j = activeEnemies.size() - 1; j > -1; j--){
-            			Enemy e = activeEnemies.get(j);
-            			if (p.proj.getBoundsInParent().intersects(e.avatar.getBoundsInParent())) {
-            	            e.wasShot(p.getDamage());
-            	            
-            	            if(e.getHealth() <= 0){
-            	            	killEnemy(e);   
-            	            }
-            	            removeProjectile(p);
-            	            break project;
-            	        }
-            			if(p.proj.getBoundsInParent().intersects(myCar.carGraphic.getBoundsInParent())){
-            				if(!invincible){
-            					changeHealth(-p.getDamage());
-            				}
-            				
-            				removeProjectile(p);
-            				break project;
-            			}
-            		}
-        		}
-        		
-        	}
-    	}
-	}
 
 
 	private void createEnemyLevel1() {
@@ -266,10 +205,7 @@ public class Game {
 	}
 
 
-	private void removeProjectile(Projectile p) {
-		root.getChildren().remove(p.proj);
-		activeProjectiles.remove(p);
-	}
+	
 
 
 	private void spawnEnemy(Enemy e) {
@@ -278,19 +214,24 @@ public class Game {
 	}
 
 
-	private void killEnemy(Enemy e) {
+	public void killEnemy(Enemy e) {
 		removeEnemy(e);
 		changeScore(e.getKillScore());
 	}
 
 
-	private void removeEnemy(Enemy e) {
+	public void removeEnemy(Enemy e) {
 		root.getChildren().remove(e.avatar);
 		activeEnemies.remove(e);
 	}
 	
+	public void removeProjectile(Projectile p) {
+		root.getChildren().remove(p.proj);
+		activeProjectiles.remove(p);
+	}
+	
 
-	private void fireEnemyWeapon(Enemy e){
+	public void fireEnemyWeapon(Enemy e){
 		Projectile p = new Projectile(myCar, Side.BAD, e.avatar.getX() + 50, e.avatar.getY() + 130, .01, e.getLongRangeAttackStrength());
 		activeProjectiles.add(p);
 		root.getChildren().add(p.proj);
@@ -340,20 +281,6 @@ public class Game {
 		activeEnemies.clear();
 		activeProjectiles.clear();
 	}
-	
-	private void changeHealth(double points){
-    	myCar.changeHealth(points);
-    	myCarHealthText.setText(HEALTH_HEADER + myCar.getHealth());
-    	if(myCar.getHealth() <= 0){
-    		// end game
-    		if (JOptionPane.showConfirmDialog(null, "You Lose! Try Again?", "End Game", 0) == 0){
-    			initializeLevel1();
-    		}
-    		else{
-    			initializeMainScreen();
-    		}
-    	}
-    }
 	
 	private void handleMouseInput (double x, double y) {
 		if (currentScreen == Screen.MAIN_SCREEN){

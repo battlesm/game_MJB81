@@ -22,5 +22,4 @@ public class MegaGiant extends Enemy {
 		avatar.setX(avatar.getX() + direction[0] * velocity);
 		avatar.setY(avatar.getY() + direction[1] * velocity);
 	}
-
 }
